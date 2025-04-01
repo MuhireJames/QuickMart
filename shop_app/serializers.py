@@ -7,10 +7,9 @@ from django.utils.encoding import force_bytes
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
+from django.conf import settings
 
-
-BASE_URL="http://localhost:5173"
-
+BASE_URL=settings.REACT_BASE_URL 
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:

@@ -42,13 +42,12 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-MIDDLEWARE.insert(0,"corsheaders.middleware.CorsMiddleware")
-# 'corsheaders.middleware.CorsMiddleware',
 
 
 ROOT_URLCONF = 'shoppit.urls'
@@ -117,20 +116,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-# STATIC_URL = 'static/'
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+STATIC_URL = 'static/'
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
-STATIC_URL=BASE_DIR/ "staticfiles"
+STATIC_ROOT=BASE_DIR/ "staticfiles"
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+MEDIA_URL = '/img/'  
 
-MEDIA_URL = '/img/'  # URL prefix for media files
-
-MEDIA_ROOT = BASE_DIR/"media" # Folder to store uploaded files
+MEDIA_ROOT = BASE_DIR/"media" 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
