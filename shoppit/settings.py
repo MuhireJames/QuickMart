@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     'shop_app',
     'rest_framework',
     'rest_framework_simplejwt',
-    'django_rest_passwordreset',
     'corsheaders',
 ]
 

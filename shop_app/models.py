@@ -1,12 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
 from django.conf import settings
-from django.core.mail import EmailMultiAlternatives
-from django_rest_passwordreset.signals import reset_password_token_created
-from django.dispatch import receiver
-from django.utils.html import strip_tags 
-from django.template.loader import render_to_string
-from django.urls import reverse 
 
 BASE_URL=settings.REACT_BASE_URL 
 
@@ -71,29 +65,4 @@ class Transaction(models.Model):
     def __str__(self):
         return f"Transaction {self.ref} - {self.status}" 
 
-@receiver(reset_password_token_created)
-def password_reset_token_created(reset_password_token, *args, **kwargs):
-    sitelink = BASE_URL
-    token = "{}".format(reset_password_token.key)
-    full_link = str(sitelink)+str("password-reset/")+str(token)
-
-    print(token)
-    print(full_link)
-
-    context = {
-        'full_link': full_link,
-        'email_adress': reset_password_token.user.email
-    }
-
-    html_message = render_to_string("backend/email.html", context=context)
-    plain_message = strip_tags(html_message)
-
-    msg = EmailMultiAlternatives(
-        subject = "Request for resetting password for {title}".format(title=reset_password_token.user.email), 
-        body=plain_message,
-        from_email = "mujames008@gmail.com", 
-        to=[reset_password_token.user.email]
-    )
-
-    msg.attach_alternative(html_message, "text/html")
-    msg.send()        
+      

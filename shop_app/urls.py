@@ -18,8 +18,6 @@ urlpatterns = [
    path("payment_callback/",views.payment_callback,name="payment_callback"),
    path("initiate_paypal_payment/",views.initiate_paypal_payment,name="initiate_paypal_payment"),
    path("paypal_payment_callback/",views.paypal_payment_callback,name="paypal_payment_callback"),
-   path("request_password_reset/", views.request_password_reset, name="request_password_reset"),
-   path("reset_password/",views.reset_password,name="reset_password"),
-   
+    
 ]
 

@@ -153,60 +153,7 @@ class UserEditSerializer(serializers.ModelSerializer):
         return instance
     
 
-class PasswordResetRequestSerializer(serializers.Serializer):
-    email = serializers.EmailField()
 
-    def validate_email(self, value):
-        User = get_user_model()
-        if not User.objects.filter(email=value).exists():
-            raise serializers.ValidationError("No user is associated with this email.")
-        return value
 
-    def save(self):
-        email = self.validated_data["email"]
-        User = get_user_model()
-        user = User.objects.get(email=email)
 
-        # Generate password reset token and URL
-        token = default_token_generator.make_token(user)
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        reset_url = f"{BASE_URL}/resetpassword/{uid}/{token}/"  # Replace with your frontend URL
-
-        # Send email
-        send_mail(
-            subject="Password Reset Request",
-            message=f"Click the link to reset your password: {reset_url}",
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[email],
-        )
-
-class PasswordResetSerializer(serializers.Serializer):
-    uid = serializers.CharField()
-    token = serializers.CharField()
-    new_password = serializers.CharField(write_only=True)
-    confirm_password = serializers.CharField(write_only=True)
-
-    def validate(self, data):
-        if data["new_password"] != data["confirm_password"]:
-            raise serializers.ValidationError({"password": "Passwords do not match!"})
-        return data
-
-    def save(self):
-        uid = self.validated_data["uid"]
-        token = self.validated_data["token"]
-        new_password = self.validated_data["new_password"]
-
-        try:
-            uid = urlsafe_base64_decode(uid).decode()
-            User = get_user_model()
-            user = User.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            raise serializers.ValidationError({"uid": "Invalid UID."})
-
-        if not default_token_generator.check_token(user, token):
-            raise serializers.ValidationError({"token": "Invalid or expired token."})
-
-        user.set_password(new_password)
-        user.save()
-        return user
 
