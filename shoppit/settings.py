@@ -158,12 +158,13 @@ PAYPAL_CLIENT_SECRET="ELozkeIO1OkwsAYcZf0gEh9px7hLsKZRrz_Wh4G0Ffj0vrgo3aEf-GujHO
 
 PAYPAL_MODE="sandbox"
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "mujames008@gmail.com"
-EMAIL_HOST_PASSWORD = "Hirwa12@"
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
+DEFAULT_FROM_EMAIL = 'CBI ANALYTICS'
 
 REACT_BASE_URL=os.getenv("REACT_BASE_URL","http://localhost:5173")
 
